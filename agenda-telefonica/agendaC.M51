@@ -1,0 +1,377 @@
+BL51 BANKED LINKER/LOCATER V5.11                                                        07/13/2023  17:40:36  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V5.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE contatinhos.obj TO agendaC RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  contatinhos.obj (CONTATINHOS)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?COPY)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?IMUL)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?OFFXADD)
+  C:\KEIL\C51\LIB\C51S.LIB (PRINTF)
+  C:\KEIL\C51\LIB\C51S.LIB (GETCHAR)
+  C:\KEIL\C51\LIB\C51S.LIB (SCANF)
+  C:\KEIL\C51\LIB\C51S.LIB (GETS)
+  C:\KEIL\C51\LIB\C51S.LIB (STRSTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?MEMSET)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CSTOPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?ISTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LNEG)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?PLDIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?PILDIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+  C:\KEIL\C51\LIB\C51S.LIB (PUTCHAR)
+  C:\KEIL\C51\LIB\C51S.LIB (_GETKEY)
+  C:\KEIL\C51\LIB\C51S.LIB (UNGETC)
+  C:\KEIL\C51\LIB\C51S.LIB (ISSPACE)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTIDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTXDATA)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?LSTPDATA)
+
+
+LINK MAP OF MODULE:  agendaC (CONTATINHOS)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?GETCHAR
+                    0009H     0017H                  *** GAP ***
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+            BIT     0021H.1   0000H.1   UNIT         ?BI?GETCHAR
+                    0021H.2   0000H.6                *** GAP ***
+            DATA    0022H     003DH     UNIT         _DATA_GROUP_
+            IDATA   005FH     0001H     UNIT         ?STACK
+
+            * * * * * * *  X D A T A   M E M O R Y  * * * * * * *
+            XDATA   0000H     639CH     UNIT         ?XD?CONTATINHOS
+
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 2
+
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     05EDH     UNIT         ?CO?CONTATINHOS
+            CODE    05F0H     0486H     UNIT         ?PR?MAIN?CONTATINHOS
+            CODE    0A76H     035CH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0DD2H     0317H     UNIT         ?PR?SCANF?SCANF
+            CODE    10E9H     0274H     UNIT         ?C?LIB_CODE
+            CODE    135DH     009FH     UNIT         ?PR?_GETS?GETS
+            CODE    13FCH     0082H     UNIT         ?PR?_STRSTR?STRSTR
+            CODE    147EH     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    14A5H     0013H     UNIT         ?PR?_ISSPACE?ISSPACE
+            CODE    14B8H     0011H     UNIT         ?PR?GETCHAR?GETCHAR
+            CODE    14C9H     000CH     UNIT         ?C_C51STARTUP
+            CODE    14D5H     000AH     UNIT         ?PR?_GETKEY?_GETKEY
+            CODE    14DFH     0005H     UNIT         ?PR?GETCHAR?UNGETCHAR
+
+
+
+OVERLAY MAP OF MODULE:   agendaC (CONTATINHOS)
+
+
+SEGMENT                           BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH     START    LENGTH
+------------------------------------------------------------------
+?C_C51STARTUP                  -----    -----      -----    -----
+  +--> ?PR?MAIN?CONTATINHOS
+
+?PR?MAIN?CONTATINHOS           -----    -----      0022H    0023H
+  +--> ?CO?CONTATINHOS
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?GETCHAR?GETCHAR
+  +--> ?PR?_GETS?GETS
+  +--> ?PR?_STRSTR?STRSTR
+  +--> ?PR?SCANF?SCANF
+
+?PR?PRINTF?PRINTF              0020H.0  0001H.1    0045H    0014H
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+?PR?GETCHAR?GETCHAR            -----    -----      -----    -----
+  +--> ?PR?_GETKEY?_GETKEY
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+?PR?_GETS?GETS                 -----    -----      0045H    0007H
+  +--> ?PR?GETCHAR?GETCHAR
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+?PR?_STRSTR?STRSTR             -----    -----      0045H    000CH
+
+?PR?SCANF?SCANF                0020H.0  0000H.6    0045H    001AH
+  +--> ?PR?GETCHAR?UNGETCHAR
+  +--> ?PR?_ISSPACE?ISSPACE
+  +--> ?PR?GETCHAR?GETCHAR
+
+
+
+SYMBOL TABLE OF MODULE:  agendaC (CONTATINHOS)
+
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 3
+
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        CONTATINHOS
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:05F0H         PUBLIC        main
+  D:0087H         PUBLIC        PCON
+  C:03F2H         PUBLIC        contatosold
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:008DH         PUBLIC        TH1
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  X:0000H         PUBLIC        contatos
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  -------         DO            
+  D:0022H         SYMBOL        c
+  D:0023H         SYMBOL        n
+  D:0025H         SYMBOL        string
+  -------         ENDDO         
+  C:05F0H         LINE#         37
+  C:05F0H         LINE#         42
+  C:05F3H         LINE#         43
+  C:05F6H         LINE#         44
+  C:05F9H         LINE#         45
+  C:05FCH         LINE#         46
+  C:05FEH         LINE#         48
+  C:060DH         LINE#         50
+  C:0620H         LINE#         52
+  C:0620H         LINE#         53
+  C:0629H         LINE#         58
+  C:0632H         LINE#         59
+  C:063BH         LINE#         60
+  C:0644H         LINE#         61
+  C:064DH         LINE#         62
+  C:0656H         LINE#         63
+  C:065FH         LINE#         64
+  C:0668H         LINE#         65
+  C:0671H         LINE#         66
+  C:067AH         LINE#         68
+  C:067FH         LINE#         70
+  C:068EH         LINE#         72
+  C:0697H         LINE#         73
+  C:06A0H         LINE#         74
+  C:06A5H         LINE#         76
+  C:06BDH         LINE#         77
+  C:0705H         LINE#         79
+  C:0705H         LINE#         80
+  C:0718H         LINE#         81
+  C:0721H         LINE#         82
+  C:072EH         LINE#         85
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 4
+
+
+  C:072EH         LINE#         86
+  C:073DH         LINE#         88
+  C:0746H         LINE#         89
+  C:0753H         LINE#         90
+  C:075CH         LINE#         91
+  C:0761H         LINE#         92
+  C:078BH         LINE#         93
+  C:07D3H         LINE#         95
+  C:07D3H         LINE#         96
+  C:07E9H         LINE#         97
+  C:07F2H         LINE#         98
+  C:07FFH         LINE#         99
+  C:07FFH         LINE#         100
+  C:080AH         LINE#         103
+  C:0810H         LINE#         104
+  C:0813H         LINE#         105
+  C:081EH         LINE#         108
+  C:0824H         LINE#         110
+  C:0827H         LINE#         111
+  C:0836H         LINE#         113
+  C:083FH         LINE#         115
+  C:0854H         LINE#         116
+  C:086FH         LINE#         118
+  C:0878H         LINE#         119
+  C:089AH         LINE#         121
+  C:08A3H         LINE#         122
+  C:08C5H         LINE#         124
+  C:08CEH         LINE#         125
+  C:0923H         LINE#         128
+  C:092CH         LINE#         129
+  C:094DH         LINE#         131
+  C:0956H         LINE#         132
+  C:0963H         LINE#         133
+  C:0963H         LINE#         135
+  C:0963H         LINE#         136
+  C:096EH         LINE#         137
+  C:096EH         LINE#         138
+  C:0979H         LINE#         140
+  C:0982H         LINE#         142
+  C:0985H         LINE#         143
+  C:0994H         LINE#         145
+  C:09A1H         LINE#         146
+  C:09AAH         LINE#         147
+  C:09B7H         LINE#         148
+  C:09BCH         LINE#         149
+  C:09E6H         LINE#         150
+  C:0A34H         LINE#         152
+  C:0A34H         LINE#         153
+  C:0A4AH         LINE#         154
+  C:0A53H         LINE#         155
+  C:0A60H         LINE#         158
+  C:0A60H         LINE#         159
+  C:0A60H         LINE#         160
+  C:0A69H         LINE#         161
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        CONTATINHOS
+
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 5
+
+
+  -------         MODULE        ?C?COPY
+  C:11B9H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+  -------         MODULE        ?C?IMUL
+  C:11DFH         PUBLIC        ?C?IMUL
+  -------         ENDMOD        ?C?IMUL
+
+  -------         MODULE        ?C?OFFXADD
+  C:11F1H         PUBLIC        ?C?OFFXADD
+  -------         ENDMOD        ?C?OFFXADD
+
+  -------         MODULE        PRINTF
+  D:0045H         PUBLIC        ?_PRINTF517?BYTE
+  D:0045H         PUBLIC        ?_PRINTF?BYTE
+  D:0045H         PUBLIC        ?_SPRINTF517?BYTE
+  D:0045H         PUBLIC        ?_SPRINTF?BYTE
+  C:0AD8H         PUBLIC        _PRINTF
+  C:0AD8H         PUBLIC        _PRINTF517
+  C:0AD2H         PUBLIC        _SPRINTF
+  C:0AD2H         PUBLIC        _SPRINTF517
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        GETCHAR
+  B:0021H.1       PUBLIC        ?C?CHARLOADED
+  D:0008H         PUBLIC        ?_UNGETCHAR?BYTE
+  C:14B8H         PUBLIC        GETCHAR
+  -------         ENDMOD        GETCHAR
+
+  -------         MODULE        SCANF
+  D:0045H         PUBLIC        ?_SCANF517?BYTE
+  D:0045H         PUBLIC        ?_SCANF?BYTE
+  D:0045H         PUBLIC        ?_SSCANF517?BYTE
+  D:0045H         PUBLIC        ?_SSCANF?BYTE
+  C:0E54H         PUBLIC        _SCANF
+  C:0E54H         PUBLIC        _SCANF517
+  C:0E50H         PUBLIC        _SSCANF
+  C:0E50H         PUBLIC        _SSCANF517
+  -------         ENDMOD        SCANF
+
+  -------         MODULE        GETS
+  C:135DH         PUBLIC        _gets
+  -------         ENDMOD        GETS
+
+  -------         MODULE        STRSTR
+  D:0045H         PUBLIC        ?_strstr?BYTE
+  C:13FCH         PUBLIC        _strstr
+  -------         ENDMOD        STRSTR
+
+  -------         MODULE        ?C?MEMSET
+  C:11FDH         PUBLIC        ?C?MEMSET
+  -------         ENDMOD        ?C?MEMSET
+
+  -------         MODULE        ?C?CLDPTR
+  C:1229H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 6
+
+
+  -------         MODULE        ?C?CLDOPTR
+  C:1242H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:126FH         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?CSTOPTR
+  C:1281H         PUBLIC        ?C?CSTOPTR
+  -------         ENDMOD        ?C?CSTOPTR
+
+  -------         MODULE        ?C?ISTPTR
+  C:12A3H         PUBLIC        ?C?ISTPTR
+  -------         ENDMOD        ?C?ISTPTR
+
+  -------         MODULE        ?C?LNEG
+  C:12C2H         PUBLIC        ?C?LNEG
+  -------         ENDMOD        ?C?LNEG
+
+  -------         MODULE        ?C?LSTPTR
+  C:12D0H         PUBLIC        ?C?LSTPTR
+  -------         ENDMOD        ?C?LSTPTR
+
+  -------         MODULE        ?C?PLDIDATA
+  C:12EAH         PUBLIC        ?C?PLDIDATA
+  -------         ENDMOD        ?C?PLDIDATA
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:12F3H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?PILDIDATA
+  C:1303H         PUBLIC        ?C?PILDIDATA
+  -------         ENDMOD        ?C?PILDIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:1313H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:147EH         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+  -------         MODULE        _GETKEY
+  C:14D5H         PUBLIC        _GETKEY
+  -------         ENDMOD        _GETKEY
+
+  -------         MODULE        UNGETC
+  C:14DFH         PUBLIC        _UNGETCHAR
+  -------         ENDMOD        UNGETC
+
+  -------         MODULE        ISSPACE
+  C:14A5H         PUBLIC        _isspace
+  -------         ENDMOD        ISSPACE
+
+  -------         MODULE        ?C?LSTIDATA
+BL51 BANKED LINKER/LOCATER V5.11                                                      07/13/2023  17:40:36  PAGE 7
+
+
+  C:1339H         PUBLIC        ?C?LSTIDATA
+  -------         ENDMOD        ?C?LSTIDATA
+
+  -------         MODULE        ?C?LSTXDATA
+  C:1345H         PUBLIC        ?C?LSTXDATA
+  -------         ENDMOD        ?C?LSTXDATA
+
+  -------         MODULE        ?C?LSTPDATA
+  C:1351H         PUBLIC        ?C?LSTPDATA
+  -------         ENDMOD        ?C?LSTPDATA
+
+Program Size: data=72.2 xdata=25500 code=5348
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
