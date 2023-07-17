@@ -1,5 +1,5 @@
 /*Agenda de Contatos*/
-// Arquivos necessÃ¡rios
+// Arquivos necessários
 #include "sll.h"
 #include <reg52.h>
 #include <stdio.h>
@@ -16,14 +16,15 @@ struct registro {
   char nome[32]; // no final tem o 0 - 31 caracteres
   char tel[14];  // 13 caracteres
   struct nasc datan;
-  unsigned int relacionamento;
+  unsigned int relacionamento; 
+ 
 };
 
 struct registro code contatosold[10] = {
     "Lindomar Mir",     "71974859614", 12, 6, 2007, 0,
     "Clea Santos",      "71987412345", 20, 6, 2003, 1,
-    "Franklin Savaget", "72999121620", 18, 6, 2008, 2,
-    "Mariana Barros",   "74974859613", 12, 6, 2002, 3,
+    "Franklin Savaget", "72999121620", 18, 6, 2008, 1,
+    "Mariana Barros",   "74974859613", 12, 6, 2002, 1,
     "Jose Eduardo",     "71974859613", 30, 6, 1989, 4,
     "Tatiana Oliveira", "71974859610", 12, 6, 1999, 5,
     "Camila de Jesus",  "71974859615", 1,  6, 1957, 6,
@@ -41,11 +42,14 @@ void exibirContatos(); // exibe lista ordenada
 char string[32];
 int n;
 int selecionado;
+char afinidade_pesquisada[20];
 
 // funcao principal
 void main(void) {
+   
   // declaracoes de variaveis
   char c;
+  int relacionamento_numero;
   TMOD = 0x20;
   SCON = 0X52;
   TH1 = (256 - 13);
@@ -79,20 +83,15 @@ void main(void) {
       printf("Lista de Contatos selecionada.\n");
       for (n = 0; n < 500; n++) {
         // Verifica se o primeiro caractere da string 'nome' do contato na
-        // posição 'n' não é igual a zero. Isso significa que o nome do contato
-        // na posição 'n' não está vazio, ou seja, contém pelo menos um
+        // posi??o 'n' n?o ? igual a zero. Isso significa que o nome do contato
+        // na posi??o 'n' n?o est? vazio, ou seja, cont?m pelo menos um
         // caractere
         if (contatos[n].nome[0] != 0) {
           printf("%s %s %u \n", contatos[n].nome, contatos[n].tel,
                  contatos[n].relacionamento);
         }
       }
-
-      // Voltar ao menu
-      printf("\n Tecle espaço para voltar ao Menu");
-      while (getchar() != ' ')
-        ;
-
+voltarMenu();
       // logica Pesquisar Nome
     } else if (c == 'n' || c == 'N') {
       printf("\nPesquisa por nome selecionada.\n");
@@ -116,9 +115,48 @@ void main(void) {
 
       // logica Pesquisa Relacionamento
     } else if (c == 'r' || c == 'R') {
-      printf("Pesquisa por relacionamento selecionada.\n");
-      voltarMenu();
+	  printf("\nDigite o relacionamento: ");
+	  gets (string, 32); // ler string
+      if (strcmp(string, "Amigo") == 0) {
+        relacionamento_numero = 1;
+		printf("Lista da categoria Amigo");
+      } else if (strcmp(string, "Amizade") == 0) {
+          relacionamento_numero = 2;
+		printf("Lista da categoria Amizade");
+          } else if (strcmp(string, "Namorado") == 0) {
+		printf("Lista da categoria Namorado");
+            relacionamento_numero = 3;
+		    }
+	for (n = 0; n < 500; n++) {
+        if (contatos[n].relacionamento == relacionamento_numero) {
+            printf("%s %u\n", contatos[n].nome, contatos[n].relacionamento);
+        }
+    }
+		  
 
+
+ 
+//        scanf("%s", &afinidade_pesquisada);// se voce quer armazenar nessa variavel ? necessario o uso do & - para representar o endereco
+//		getchar(); // Limpa o buffer de caractere indesejado ocasionado pelo scanf
+//	    printf("Contatos com afinidade %s:\n", afinidade_pesquisada);
+//	  for (n = 0; n < 500; n++) {
+	  // utiliza strstr para procurar primeiro 
+	  // Pq vai que o usuario coloque algo que nao exista
+	  // tem que lembrar q o professor quer os numeros tambem 
+//	  	if (strstr(contatos[n].relacionamento, string) !=
+  //          NULL) { // Verifica se 'string' esta contida
+    //      printf("%s %s %bd\n", contatos[n].nome, contatos[n].tel,
+      //           contatos[n].relacionamento);
+       // }
+	    //if (strcmp([contatos[n].relacionamento], afinidade_pesquisada) == 0) {
+       // printf("%s %s %d/%d/%d\n", contatos[n].nome, contatos[n].tel);
+
+	//	}
+     //   }
+
+      voltarMenu();
+	  
+	  
 
       // Adcionar Contato
     } else if (c == 'a' || c == 'A') {
@@ -142,7 +180,7 @@ void main(void) {
                  contatos[n].datan.mes, contatos[n].datan.ano);
 
           printf("\nDigite o relacionamento do contato: ");
-          scanf(" %u", contatos[n].relacionamento);
+          scanf(" %u",contatos[n].relacionamento);
 
           voltarMenu();
         }
@@ -153,7 +191,7 @@ void main(void) {
     } else if (c == 'd' || c == 'D') {
       printf("\nDeletar contato\n");
 	  exibirContatos();
-	  printf("O contato %s será excluído. \n Tem certeza ? [S]im X [N]ão :",contatos[selecionado].nome);
+	  printf("O contato %s ser? exclu?do. \n Tem certeza ? [S]im X [N]?o :",contatos[selecionado].nome);
 	  c = getchar();
 	  if (c == 'S' || c == 's') {
 	  contatos[selecionado].nome[0] = 0;
@@ -161,10 +199,10 @@ void main(void) {
 	  contatos[selecionado].relacionamento = 0;
 	  printf("im.  \n -> Contato Deletado\n");
 	  }	else {
-	  printf("ão \n -> Operação cancelada");}
+	  printf("?o \n -> Opera??o cancelada");}
 	  voltarMenu();
 
-      // Lógica para EDITAR contato
+      // L?gica para EDITAR contato
     } else if (c == 'e' || c == 'E') {
 	  exibirContatos();
 
@@ -175,7 +213,7 @@ void main(void) {
       printf("[C] - Relacionamento\n");
       printf("[D] - Data de Nascimento\n");
 
-      // Recebe e atualiza a opção escolhida
+      // Recebe e atualiza a op??o escolhida
       c = getchar();
 
       switch (c) {
@@ -199,8 +237,9 @@ void main(void) {
       case 'c':
         // Atualiza relacionamento
         printf("Novo relacionamento:\n");
-        scanf(" %u", contatos[selecionado].relacionamento);
-		getchar ();
+        scanf(" %u", &contatos[selecionado].relacionamento);
+		getchar();
+		printf("Atualizado para: %u", contatos[selecionado].relacionamento);
         break;
 
       case 'D':
@@ -212,12 +251,12 @@ void main(void) {
         break;
 
       default:
-        printf("Opção inválida.\n");
+        printf("Op??o inv?lida.\n");
       }
       voltarMenu();
 
-    } else { // Sem correspondência das alternativas
-      printf("\nOpção inválida. Press Space e Tente novamente.\n");
+    } else { // Sem correspond?ncia das alternativas
+      printf("\nOp??o inv?lida. Press Space e Tente novamente.\n");
       while (getchar() != ' ')
         ;
     }
@@ -226,7 +265,7 @@ void main(void) {
 } // main
 
 void voltarMenu() {
-  printf("\nPressione espaço para continuar\n");
+  printf("\nPressione espa?o para continuar\n");
   while (getchar() != ' ')
     ;
 }
@@ -237,12 +276,11 @@ void exibirContatos() {
       for (n = 0; n < 500; n++) {
         // verifica se 'string' contida diferente de null
         if (strstr(contatos[n].nome, string) != NULL) {
-          printf("%dº - %s %s %u\n", n, contatos[n].nome, contatos[n].tel,
+          printf("%d? - %s %s %u\n", n, contatos[n].nome, contatos[n].tel,
                  contatos[n].relacionamento);
         }
       }
-	        printf("\nInforme o número º correspondente ao contato.\n");
+	        printf("\nInforme o n?mero ? correspondente ao contato.\n");
 			scanf("%d", &selecionado);
 			getchar();
-
 }

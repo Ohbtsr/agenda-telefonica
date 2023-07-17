@@ -1,4 +1,4 @@
-C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 00:29:23 PAGE 1   
+C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 22:17:51 PAGE 1   
 
 
 C51 COMPILER V7.20, COMPILATION OF MODULE CONTATINHOS
@@ -8,7 +8,7 @@ COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE contatinhos.c BROWSE DEBUG OBJECTEX
 line level    source
 
    1          /*Agenda de Contatos*/
-   2          // Arquivos necessÃ¡rios
+   2          // Arquivos necessários
    3          #include "sll.h"
    4          #include <reg52.h>
    5          #include <stdio.h>
@@ -25,252 +25,291 @@ line level    source
   16            char nome[32]; // no final tem o 0 - 31 caracteres
   17            char tel[14];  // 13 caracteres
   18            struct nasc datan;
-  19            unsigned int relacionamento;
-  20          };
-  21          
-  22          struct registro code contatosold[10] = {
-  23              "Lindomar Mir",     "71974859614", 12, 6, 2007, 0,
-  24              "Clea Santos",      "71987412345", 20, 6, 2003, 1,
-  25              "Franklin Savaget", "72999121620", 18, 6, 2008, 2,
-  26              "Mariana Barros",   "74974859613", 12, 6, 2002, 3,
-  27              "Jose Eduardo",     "71974859613", 30, 6, 1989, 4,
-  28              "Tatiana Oliveira", "71974859610", 12, 6, 1999, 5,
-  29              "Camila de Jesus",  "71974859615", 1,  6, 1957, 6,
-  30              "Louise Poliana",   "79987514952", 30, 6, 1962, 7,
-  31              "Heitor Dias",      "71984125247", 12, 6, 1975, 8,
-  32              "Reinaldo Goes",    "71974859618", 27, 8, 1978, 9};
-  33          
-  34          struct registro xdata contatos[500];
-  35          
-  36          // declaracoes de funcoes
-  37          void voltarMenu(); // voltar ao menu
-  38          void exibirContatos(); // exibe lista ordenada
-  39          
-  40          // Variaveis globais
-  41          char string[32];
-  42          int n;
-  43          int selecionado;
-  44          
-  45          // funcao principal
-  46          void main(void) {
-  47   1        // declaracoes de variaveis
-  48   1        char c;
-  49   1        TMOD = 0x20;
-  50   1        SCON = 0X52;
-  51   1        TH1 = (256 - 13);
-  52   1        PCON |= 0X80;
-  53   1        TR1 = 1;
-  54   1        // limpeza
-  55   1        memset(&contatos, 0, sizeof(contatos));
-C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 00:29:23 PAGE 2   
+  19            unsigned int relacionamento; 
+  20           
+  21          };
+  22          
+  23          struct registro code contatosold[10] = {
+  24              "Lindomar Mir",     "71974859614", 12, 6, 2007, 0,
+  25              "Clea Santos",      "71987412345", 20, 6, 2003, 1,
+  26              "Franklin Savaget", "72999121620", 18, 6, 2008, 1,
+  27              "Mariana Barros",   "74974859613", 12, 6, 2002, 1,
+  28              "Jose Eduardo",     "71974859613", 30, 6, 1989, 4,
+  29              "Tatiana Oliveira", "71974859610", 12, 6, 1999, 5,
+  30              "Camila de Jesus",  "71974859615", 1,  6, 1957, 6,
+  31              "Louise Poliana",   "79987514952", 30, 6, 1962, 7,
+  32              "Heitor Dias",      "71984125247", 12, 6, 1975, 8,
+  33              "Reinaldo Goes",    "71974859618", 27, 8, 1978, 9};
+  34          
+  35          struct registro xdata contatos[500];
+  36          
+  37          // declaracoes de funcoes
+  38          void voltarMenu(); // voltar ao menu
+  39          void exibirContatos(); // exibe lista ordenada
+  40          
+  41          // Variaveis globais
+  42          char string[32];
+  43          int n;
+  44          int selecionado;
+  45          char afinidade_pesquisada[20];
+  46          
+  47          // funcao principal
+  48          void main(void) {
+  49   1         
+  50   1        // declaracoes de variaveis
+  51   1        char c;
+  52   1        int relacionamento_numero;
+  53   1        TMOD = 0x20;
+  54   1        SCON = 0X52;
+  55   1        TH1 = (256 - 13);
+C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 22:17:51 PAGE 2   
 
-  56   1        // copia struc old para contatos
-  57   1        memcpy(&contatos, &contatosold, sizeof(contatosold));
-  58   1      
-  59   1        while (1) {
-  60   2          printf("+-----------------------------------+\n"
-  61   2                 "|                                   |\n"
-  62   2                 "|     AGENDA DE CONTATOS            |\n"
-  63   2                 "|                                   |\n");
-  64   2      
-  65   2          printf("| Menu - Digite a opcao desejada    |\n");
-  66   2          printf("| [L] - Lista de Contatos    OK     |\n");
-  67   2          printf("| [N] - Pesquisa por nome    OK     |\n");
-  68   2          printf("| [I] - Pesquisa por idade          |\n");
-  69   2          printf("| [R] - Pesquisa por Relacionamento | \n");
-  70   2          printf("| [A] - Adcionar contato     OK     |\n");
-  71   2          printf("| [D] - Deletar contato             |\n");
-  72   2          printf("| [E] - EDITAR contato              | \n");
-  73   2          printf("+-----------------------------------+\n\n");
-  74   2      
-  75   2          c = getchar();
-  76   2          // logica para listar os contatos
-  77   2          if (c == 'l' || c == 'L') {
-  78   3            //      printf("/f");  // Limpar Chat
-  79   3            printf("Lista de Contatos selecionada.\n");
-  80   3            for (n = 0; n < 500; n++) {
-  81   4              // Verifica se o primeiro caractere da string 'nome' do contato na
-  82   4              // posição 'n' não é igual a zero. Isso significa que o nome do contato
-  83   4              // na posição 'n' não está vazio, ou seja, contém pelo menos um
-  84   4              // caractere
-  85   4              if (contatos[n].nome[0] != 0) {
-  86   5                printf("%s %s %u \n", contatos[n].nome, contatos[n].tel,
-  87   5                       contatos[n].relacionamento);
-  88   5              }
-  89   4            }
-  90   3      
-  91   3            // Voltar ao menu
-  92   3            printf("\n Tecle espaço para voltar ao Menu");
-  93   3            while (getchar() != ' ')
-  94   3              ;
-  95   3      
-  96   3            // logica Pesquisar Nome
-  97   3          } else if (c == 'n' || c == 'N') {
-  98   3            printf("\nPesquisa por nome selecionada.\n");
-  99   3            printf("Digite o nome: ");
- 100   3            gets(string, 32);
- 101   3            for (n = 0; n < 500; n++) {
- 102   4              if (strstr(contatos[n].nome, string) !=
- 103   4                  NULL) { // Verifica se 'string' esta contida
- 104   5                printf("%s %s %bd\n", contatos[n].nome, contatos[n].tel,
- 105   5                       contatos[n].relacionamento);
- 106   5              }
- 107   4            }
- 108   3            voltarMenu();
+  56   1        PCON |= 0X80;
+  57   1        TR1 = 1;
+  58   1        // limpeza
+  59   1        memset(&contatos, 0, sizeof(contatos));
+  60   1        // copia struc old para contatos
+  61   1        memcpy(&contatos, &contatosold, sizeof(contatosold));
+  62   1      
+  63   1        while (1) {
+  64   2          printf("+-----------------------------------+\n"
+  65   2                 "|                                   |\n"
+  66   2                 "|     AGENDA DE CONTATOS            |\n"
+  67   2                 "|                                   |\n");
+  68   2      
+  69   2          printf("| Menu - Digite a opcao desejada    |\n");
+  70   2          printf("| [L] - Lista de Contatos    OK     |\n");
+  71   2          printf("| [N] - Pesquisa por nome    OK     |\n");
+  72   2          printf("| [I] - Pesquisa por idade          |\n");
+  73   2          printf("| [R] - Pesquisa por Relacionamento | \n");
+  74   2          printf("| [A] - Adcionar contato     OK     |\n");
+  75   2          printf("| [D] - Deletar contato             |\n");
+  76   2          printf("| [E] - EDITAR contato              | \n");
+  77   2          printf("+-----------------------------------+\n\n");
+  78   2      
+  79   2          c = getchar();
+  80   2          // logica para listar os contatos
+  81   2          if (c == 'l' || c == 'L') {
+  82   3            //      printf("/f");  // Limpar Chat
+  83   3            printf("Lista de Contatos selecionada.\n");
+  84   3            for (n = 0; n < 500; n++) {
+  85   4              // Verifica se o primeiro caractere da string 'nome' do contato na
+  86   4              // posi??o 'n' n?o ? igual a zero. Isso significa que o nome do contato
+  87   4              // na posi??o 'n' n?o est? vazio, ou seja, cont?m pelo menos um
+  88   4              // caractere
+  89   4              if (contatos[n].nome[0] != 0) {
+  90   5                printf("%s %s %u \n", contatos[n].nome, contatos[n].tel,
+  91   5                       contatos[n].relacionamento);
+  92   5              }
+  93   4            }
+  94   3      voltarMenu();
+  95   3            // logica Pesquisar Nome
+  96   3          } else if (c == 'n' || c == 'N') {
+  97   3            printf("\nPesquisa por nome selecionada.\n");
+  98   3            printf("Digite o nome: ");
+  99   3            gets(string, 32);
+ 100   3            for (n = 0; n < 500; n++) {
+ 101   4              if (strstr(contatos[n].nome, string) !=
+ 102   4                  NULL) { // Verifica se 'string' esta contida
+ 103   5                printf("%s %s %bd\n", contatos[n].nome, contatos[n].tel,
+ 104   5                       contatos[n].relacionamento);
+ 105   5              }
+ 106   4            }
+ 107   3            voltarMenu();
+ 108   3      
  109   3      
- 110   3      
- 111   3            // logica Pesquisar Idade
- 112   3          } else if (c == 'i' || c == 'I') {
- 113   3            printf("Pesquisa por idade selecionada.\n");
- 114   3            voltarMenu();
+ 110   3            // logica Pesquisar Idade
+ 111   3          } else if (c == 'i' || c == 'I') {
+ 112   3            printf("Pesquisa por idade selecionada.\n");
+ 113   3            voltarMenu();
+ 114   3      
  115   3      
- 116   3      
- 117   3            // logica Pesquisa Relacionamento
-C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 00:29:23 PAGE 3   
+ 116   3            // logica Pesquisa Relacionamento
+ 117   3          } else if (c == 'r' || c == 'R') {
+C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 22:17:51 PAGE 3   
 
- 118   3          } else if (c == 'r' || c == 'R') {
- 119   3            printf("Pesquisa por relacionamento selecionada.\n");
- 120   3            voltarMenu();
- 121   3      
- 122   3      
- 123   3            // Adcionar Contato
- 124   3          } else if (c == 'a' || c == 'A') {
- 125   3            printf("Adicionar novo contato.\n");
- 126   3      
- 127   3            for (n = 0; n < 500; n++) {
- 128   4              if (contatos[n].nome[0] == 0) {
- 129   5      
- 130   5                printf("Insira o nome: ");
- 131   5                scanf(" %s", contatos[n].nome);
- 132   5      
- 133   5                printf("\nTelefone do contato: ");
- 134   5                scanf(" %s", contatos[n].tel);
- 135   5      
- 136   5                printf("\nData de nascimento do contato (DD/MM/AAAA):  ");
- 137   5                scanf(" %d/%d/%d", &contatos[n].datan.dia, &contatos[n].datan.mes,
- 138   5                      &contatos[n].datan.ano);
- 139   5                getchar();
- 140   5      
- 141   5                printf("\nData de Nascimento: %d / %d / %d", contatos[n].datan.dia,
- 142   5                       contatos[n].datan.mes, contatos[n].datan.ano);
- 143   5      
- 144   5                printf("\nDigite o relacionamento do contato: ");
- 145   5                scanf(" %u", contatos[n].relacionamento);
- 146   5      
- 147   5                voltarMenu();
- 148   5              }
- 149   4            }
- 150   3      
- 151   3      
- 152   3            // logica deletar contato
- 153   3          } else if (c == 'd' || c == 'D') {
- 154   3            printf("\nDeletar contato\n");
- 155   3                exibirContatos();
- 156   3                printf("O contato %s será excluído. \n Tem certeza ? [S]im X [N]ão :",contatos[selecionado].nome);
- 157   3                c = getchar();
- 158   3                if (c == 'S' || c == 's') {
- 159   4                contatos[selecionado].nome[0] = 0;
- 160   4                contatos[selecionado].tel[0] = 0;
- 161   4                contatos[selecionado].relacionamento = 0;
- 162   4                printf("im.  \n -> Contato Deletado\n");
- 163   4                }     else {
- 164   4                printf("ão \n -> Operação cancelada");}
- 165   3                voltarMenu();
- 166   3      
- 167   3            // Lógica para EDITAR contato
- 168   3          } else if (c == 'e' || c == 'E') {
- 169   3                exibirContatos();
- 170   3      
- 171   3                // Menu - EDITAR contato
- 172   3            printf("Informe o dado que deseja editar\n");
- 173   3            printf("[A] - Nome do contato\n");
- 174   3            printf("[B] - Telefone\n");
- 175   3            printf("[C] - Relacionamento\n");
- 176   3            printf("[D] - Data de Nascimento\n");
- 177   3      
- 178   3            // Recebe e atualiza a opção escolhida
- 179   3            c = getchar();
-C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 00:29:23 PAGE 4   
+ 118   3                printf("\nDigite o relacionamento: ");
+ 119   3                gets (string, 32); // ler string
+ 120   3            if (strcmp(string, "Amigo") == 0) {
+ 121   4              relacionamento_numero = 1;
+ 122   4                      printf("Lista da categoria Amigo");
+ 123   4            } else if (strcmp(string, "Amizade") == 0) {
+ 124   4                relacionamento_numero = 2;
+ 125   4                      printf("Lista da categoria Amizade");
+ 126   4                } else if (strcmp(string, "Namorado") == 0) {
+ 127   4                      printf("Lista da categoria Namorado");
+ 128   4                  relacionamento_numero = 3;
+ 129   4                          }
+ 130   3              for (n = 0; n < 500; n++) {
+ 131   4              if (contatos[n].relacionamento == relacionamento_numero) {
+ 132   5                  printf("%s %u\n", contatos[n].nome, contatos[n].relacionamento);
+ 133   5              }
+ 134   4          }
+ 135   3                        
+ 136   3      
+ 137   3      
+ 138   3       
+ 139   3      //        scanf("%s", &afinidade_pesquisada);// se voce quer armazenar nessa variavel ? necessario o uso d
+             -o & - para representar o endereco
+ 140   3      //              getchar(); // Limpa o buffer de caractere indesejado ocasionado pelo scanf
+ 141   3      //          printf("Contatos com afinidade %s:\n", afinidade_pesquisada);
+ 142   3      //        for (n = 0; n < 500; n++) {
+ 143   3                // utiliza strstr para procurar primeiro 
+ 144   3                // Pq vai que o usuario coloque algo que nao exista
+ 145   3                // tem que lembrar q o professor quer os numeros tambem 
+ 146   3      //              if (strstr(contatos[n].relacionamento, string) !=
+ 147   3        //          NULL) { // Verifica se 'string' esta contida
+ 148   3          //      printf("%s %s %bd\n", contatos[n].nome, contatos[n].tel,
+ 149   3            //           contatos[n].relacionamento);
+ 150   3             // }
+ 151   3                  //if (strcmp([contatos[n].relacionamento], afinidade_pesquisada) == 0) {
+ 152   3             // printf("%s %s %d/%d/%d\n", contatos[n].nome, contatos[n].tel);
+ 153   3      
+ 154   3              //      }
+ 155   3           //   }
+ 156   3      
+ 157   3            voltarMenu();
+ 158   3                
+ 159   3                
+ 160   3      
+ 161   3            // Adcionar Contato
+ 162   3          } else if (c == 'a' || c == 'A') {
+ 163   3            printf("Adicionar novo contato.\n");
+ 164   3      
+ 165   3            for (n = 0; n < 500; n++) {
+ 166   4              if (contatos[n].nome[0] == 0) {
+ 167   5      
+ 168   5                printf("Insira o nome: ");
+ 169   5                scanf(" %s", contatos[n].nome);
+ 170   5      
+ 171   5                printf("\nTelefone do contato: ");
+ 172   5                scanf(" %s", contatos[n].tel);
+ 173   5      
+ 174   5                printf("\nData de nascimento do contato (DD/MM/AAAA):  ");
+ 175   5                scanf(" %d/%d/%d", &contatos[n].datan.dia, &contatos[n].datan.mes,
+ 176   5                      &contatos[n].datan.ano);
+ 177   5                getchar();
+ 178   5      
+C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 22:17:51 PAGE 4   
 
- 180   3      
- 181   3            switch (c) {
- 182   4            case 'A':
- 183   4            case 'a':
- 184   4              // Atualiza nome
- 185   4              printf("Informe o novo nome do contato:\n");
- 186   4              gets(string, 32);
- 187   4              strcpy(contatos[selecionado].nome, string);
- 188   4              break;
- 189   4      
- 190   4            case 'B':
- 191   4            case 'b':
- 192   4              // Atualiza telefone
- 193   4              printf("Informe o novo telefone do contato:\n");
- 194   4              gets(string, 14);
- 195   4              strcpy(contatos[selecionado].tel, string);
- 196   4              break;
- 197   4      
- 198   4            case 'C':
- 199   4            case 'c':
- 200   4              // Atualiza relacionamento
- 201   4              printf("Novo relacionamento:\n");
- 202   4              scanf(" %u", contatos[selecionado].relacionamento);
- 203   4                      getchar ();
- 204   4              break;
- 205   4      
- 206   4            case 'D':
- 207   4            case 'd':
- 208   4              printf("\nData de nascimento do contato (DD/MM/AAAA):  ");
- 209   4              scanf("%d/%d/%d", &contatos[n].datan.dia, &contatos[n].datan.mes,
- 210   4                    &contatos[n].datan.ano);
- 211   4              getchar();
- 212   4              break;
- 213   4      
- 214   4            default:
- 215   4              printf("Opção inválida.\n");
- 216   4            }
- 217   3            voltarMenu();
+ 179   5                printf("\nData de Nascimento: %d / %d / %d", contatos[n].datan.dia,
+ 180   5                       contatos[n].datan.mes, contatos[n].datan.ano);
+ 181   5      
+ 182   5                printf("\nDigite o relacionamento do contato: ");
+ 183   5                scanf(" %u",contatos[n].relacionamento);
+ 184   5      
+ 185   5                voltarMenu();
+ 186   5              }
+ 187   4            }
+ 188   3      
+ 189   3      
+ 190   3            // logica deletar contato
+ 191   3          } else if (c == 'd' || c == 'D') {
+ 192   3            printf("\nDeletar contato\n");
+ 193   3                exibirContatos();
+ 194   3                printf("O contato %s ser? exclu?do. \n Tem certeza ? [S]im X [N]?o :",contatos[selecionado].nome);
+ 195   3                c = getchar();
+ 196   3                if (c == 'S' || c == 's') {
+ 197   4                contatos[selecionado].nome[0] = 0;
+ 198   4                contatos[selecionado].tel[0] = 0;
+ 199   4                contatos[selecionado].relacionamento = 0;
+ 200   4                printf("im.  \n -> Contato Deletado\n");
+ 201   4                }     else {
+ 202   4                printf("?o \n -> Opera??o cancelada");}
+ 203   3                voltarMenu();
+ 204   3      
+ 205   3            // L?gica para EDITAR contato
+ 206   3          } else if (c == 'e' || c == 'E') {
+ 207   3                exibirContatos();
+ 208   3      
+ 209   3                // Menu - EDITAR contato
+ 210   3            printf("Informe o dado que deseja editar\n");
+ 211   3            printf("[A] - Nome do contato\n");
+ 212   3            printf("[B] - Telefone\n");
+ 213   3            printf("[C] - Relacionamento\n");
+ 214   3            printf("[D] - Data de Nascimento\n");
+ 215   3      
+ 216   3            // Recebe e atualiza a op??o escolhida
+ 217   3            c = getchar();
  218   3      
- 219   3          } else { // Sem correspondência das alternativas
- 220   3            printf("\nOpção inválida. Press Space e Tente novamente.\n");
- 221   3            while (getchar() != ' ')
- 222   3              ;
- 223   3          }
- 224   2      
- 225   2        } // while primario
- 226   1      } // main
- 227          
- 228          void voltarMenu() {
- 229   1        printf("\nPressione espaço para continuar\n");
- 230   1        while (getchar() != ' ')
- 231   1          ;
- 232   1      }
- 233                // Exibir contatos
- 234          void exibirContatos() { 
- 235   1            printf("\nDigite o nome para pesquisar os contatos existentes\n");
- 236   1            gets(string, 32);
- 237   1            for (n = 0; n < 500; n++) {
- 238   2              // verifica se 'string' contida diferente de null
- 239   2              if (strstr(contatos[n].nome, string) != NULL) {
- 240   3                printf("%dº - %s %s %u\n", n, contatos[n].nome, contatos[n].tel,
- 241   3                       contatos[n].relacionamento);
-C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 00:29:23 PAGE 5   
+ 219   3            switch (c) {
+ 220   4            case 'A':
+ 221   4            case 'a':
+ 222   4              // Atualiza nome
+ 223   4              printf("Informe o novo nome do contato:\n");
+ 224   4              gets(string, 32);
+ 225   4              strcpy(contatos[selecionado].nome, string);
+ 226   4              break;
+ 227   4      
+ 228   4            case 'B':
+ 229   4            case 'b':
+ 230   4              // Atualiza telefone
+ 231   4              printf("Informe o novo telefone do contato:\n");
+ 232   4              gets(string, 14);
+ 233   4              strcpy(contatos[selecionado].tel, string);
+ 234   4              break;
+ 235   4      
+ 236   4            case 'C':
+ 237   4            case 'c':
+ 238   4              // Atualiza relacionamento
+ 239   4              printf("Novo relacionamento:\n");
+ 240   4              scanf(" %u", &contatos[selecionado].relacionamento);
+C51 COMPILER V7.20   CONTATINHOS                                                           07/16/2023 22:17:51 PAGE 5   
 
- 242   3              }
- 243   2            }
- 244   1                      printf("\nInforme o número º correspondente ao contato.\n");
- 245   1                              scanf("%d", &selecionado);
- 246   1                              getchar();
- 247   1      
- 248   1      }
+ 241   4                      getchar();
+ 242   4                      printf("Atualizado para: %u", contatos[selecionado].relacionamento);
+ 243   4              break;
+ 244   4      
+ 245   4            case 'D':
+ 246   4            case 'd':
+ 247   4              printf("\nData de nascimento do contato (DD/MM/AAAA):  ");
+ 248   4              scanf("%d/%d/%d", &contatos[n].datan.dia, &contatos[n].datan.mes,
+ 249   4                    &contatos[n].datan.ano);
+ 250   4              getchar();
+ 251   4              break;
+ 252   4      
+ 253   4            default:
+ 254   4              printf("Op??o inv?lida.\n");
+ 255   4            }
+ 256   3            voltarMenu();
+ 257   3      
+ 258   3          } else { // Sem correspond?ncia das alternativas
+ 259   3            printf("\nOp??o inv?lida. Press Space e Tente novamente.\n");
+ 260   3            while (getchar() != ' ')
+ 261   3              ;
+ 262   3          }
+ 263   2      
+ 264   2        } // while primario
+ 265   1      } // main
+ 266          
+ 267          void voltarMenu() {
+ 268   1        printf("\nPressione espa?o para continuar\n");
+ 269   1        while (getchar() != ' ')
+ 270   1          ;
+ 271   1      }
+ 272                // Exibir contatos
+ 273          void exibirContatos() { 
+ 274   1            printf("\nDigite o nome para pesquisar os contatos existentes\n");
+ 275   1            gets(string, 32);
+ 276   1            for (n = 0; n < 500; n++) {
+ 277   2              // verifica se 'string' contida diferente de null
+ 278   2              if (strstr(contatos[n].nome, string) != NULL) {
+ 279   3                printf("%d? - %s %s %u\n", n, contatos[n].nome, contatos[n].tel,
+ 280   3                       contatos[n].relacionamento);
+ 281   3              }
+ 282   2            }
+ 283   1                      printf("\nInforme o n?mero ? correspondente ao contato.\n");
+ 284   1                              scanf("%d", &selecionado);
+ 285   1                              getchar();
+ 286   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1687    ----
-   CONSTANT SIZE    =   2037    ----
+   CODE SIZE        =   1942    ----
+   CONSTANT SIZE    =   2117    ----
    XDATA SIZE       =  27000    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     36       1
+   DATA SIZE        =     56       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
